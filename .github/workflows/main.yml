@@ -29,7 +29,7 @@ jobs:
         pip install -e .
 
     - name: Run script to generate iCal file
-      run: python main.py
+      run: python mountainnetworkcalendarscraper/main.py
 
     - name: Sync to Gist using GitHub CLI
       env:
