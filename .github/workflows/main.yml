@@ -31,9 +31,10 @@ jobs:
     - name: Run script to generate iCal file
       run: python create_ical.py
 
-    - name: Sync to Gist
-      uses: exuanbo/actions-sync-gist@v2
-      with:
-        token: ${{ secrets.GIST_TOKEN }}
-        gist_id: ${{ secrets.GIST_ID }}
-        file_path: 'agenda.ics'
+    - name: Sync to Gist using GitHub CLI
+      env:
+        GH_TOKEN: ${{ secrets.GIST_TOKEN }}
+        GIST_ID: ${{ secrets.GIST_ID }}
+      run: |
+        gh auth login --with-token <<< "$GH_TOKEN"
+        gh gist edit "$GIST_ID" agenda.ics
