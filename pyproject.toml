@@ -1,0 +1,19 @@
+[project]
+name = "mountainnetworkcalendarscraper"
+version = "1"
+description = "Scrapes calendar events and puts it in ics file"
+authors = [
+    {name = "Martin",email = "martin2broers@gmail.com"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.13"
+dependencies = [
+    "requests (>=2.32.0,<3.0.0)",
+    "beautifulsoup4 (>=4.13.5,<5.0.0)",
+    "icalendar (>=6.3.1,<7.0.0)",
+    "pytz (>=2025.2,<2026.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
