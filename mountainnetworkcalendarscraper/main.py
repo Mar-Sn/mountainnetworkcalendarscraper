@@ -78,12 +78,15 @@ def create_ical(events):
 
         cal.add_component(event)
 
-    with open('agenda.ics', 'wb') as f:
+    with open('../agenda.ics', 'wb') as f:
         f.write(cal.to_ical())
     print("agenda.ics file created successfully.")
 
 
-if __name__ == "__main__":
+def main():
     scraped_events = scrape_mountain_network()
     if scraped_events:
         create_ical(scraped_events)
+
+if __name__ == "__main__":
+    main()

@@ -26,10 +26,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        poetry update
+        pip install -e .
 
     - name: Run script to generate iCal file
-      run: python create_ical.py
+      run: python main.py
 
     - name: Sync to Gist using GitHub CLI
       env:
