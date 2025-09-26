@@ -26,7 +26,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        poetry upgrade
+        poetry update
 
     - name: Run script to generate iCal file
       run: python create_ical.py
