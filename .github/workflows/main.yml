@@ -36,4 +36,4 @@ jobs:
         GH_TOKEN: ${{ secrets.GIST_TOKEN }}
         GIST_ID: ${{ secrets.GIST_ID }}
       run: |
-        gh gist edit "$GIST_ID" agenda.ics
+        gh gist edit "$GIST_ID" mountainnetworkcalendarscraper/agenda.ics
