@@ -28,16 +28,6 @@ jobs:
       run: |
         pip install -e .
     
-    - name: Diagnose Authentication
-      env:
-        GH_TOKEN: ${{ secrets.GIST_TOKEN }}
-      run: |
-        echo "Attempting to log in with provided token..."
-        gh auth login --with-token <<< "$GH_TOKEN"
-          
-        echo "Checking authentication status..."
-        gh auth status
-
     - name: Run script to generate iCal file
       run: python mountainnetworkcalendarscraper/main.py
 
@@ -46,5 +36,4 @@ jobs:
         GH_TOKEN: ${{ secrets.GIST_TOKEN }}
         GIST_ID: ${{ secrets.GIST_ID }}
       run: |
-        gh auth login --with-token <<< "$GH_TOKEN"
         gh gist edit "$GIST_ID" agenda.ics
