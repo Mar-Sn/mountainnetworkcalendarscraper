@@ -9,6 +9,9 @@ url = "https://mountain-network.nl/klimcentra/agenda/"
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
 
+# Define the locations to filter by
+LOCATIONS = ['Leeuwarden', 'Heerenveen', 'Rijnboulder', 'Nieuwegein']
+
 
 def scrape_mountain_network():
     """ Scrapes event data from the Mountain Network agenda page. """
@@ -53,8 +56,22 @@ def scrape_mountain_network():
         return []
 
 
-def create_ical(events):
+def filter_events_by_location(events, target_location):
+    """ Filter events that match the target location (case-insensitive partial match). """
+    filtered_events = []
+    for event in events:
+        # Check if the target location is contained in the event location (case-insensitive)
+        if target_location.lower() in event['location'].lower():
+            filtered_events.append(event)
+    return filtered_events
+
+
+def create_ical(events, filename):
     """ Creates an iCalendar file from a list of events. """
+    if not events:
+        print(f"No events found for {filename}. Skipping file creation.")
+        return
+    
     cal = Calendar()
     cal.add('prodid', '-//Mountain Network Agenda//mxm.dk//')
     cal.add('version', '2.0')
@@ -78,15 +95,29 @@ def create_ical(events):
 
         cal.add_component(event)
 
-    with open('agenda.ics', 'wb') as f:
+    with open(filename, 'wb') as f:
         f.write(cal.to_ical())
-    print("agenda.ics file created successfully.")
+    print(f"{filename} file created successfully with {len(events)} events.")
 
 
 def main():
     scraped_events = scrape_mountain_network()
     if scraped_events:
-        create_ical(scraped_events)
+        print(f"Total events scraped: {len(scraped_events)}")
+        
+        # Create separate calendars for each location
+        for location in LOCATIONS:
+            location_events = filter_events_by_location(scraped_events, location)
+            filename = f"agenda_{location.lower()}.ics"
+            create_ical(location_events, filename)
+        
+        # Also create a combined calendar with all events
+        create_ical(scraped_events, 'agenda_all.ics')
+        
+        print("\nLocation-specific calendar files created:")
+        for location in LOCATIONS:
+            print(f"- agenda_{location.lower()}.ics")
+        print("- agenda_all.ics (combined)")
 
 if __name__ == "__main__":
     main()

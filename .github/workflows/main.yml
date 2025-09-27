@@ -1,4 +1,4 @@
-name: Generate iCal File Weekly
+name: Generate iCal Files Weekly
 
 on:
   schedule:
@@ -28,23 +28,53 @@ jobs:
       run: |
         pip install -e .
     
-    - name: Run script to generate iCal file
+    - name: Run script to generate iCal files
       run: |
         cd mountainnetworkcalendarscraper
         python main.py
-    
-    - name: Check if file exists
-      run: |
-        ls -la mountainnetworkcalendarscraper/
-        if [ -f mountainnetworkcalendarscraper/agenda.ics ]; then
-          echo "agenda.ics found in mountainnetworkcalendarscraper/"
-        else
-          echo "agenda.ics not found in mountainnetworkcalendarscraper/"
-        fi
 
-    - name: Sync to Gist using GitHub CLI
+    - name: Sync calendars to individual Gists
       env:
         GH_TOKEN: ${{ secrets.GIST_TOKEN }}
-        GIST_ID: ${{ secrets.GIST_ID }}
       run: |
-        gh gist edit "$GIST_ID" mountainnetworkcalendarscraper/agenda.ics
+        cd mountainnetworkcalendarscraper
+        echo "Syncing calendar files to individual Gists..."
+        
+        # Define Gist IDs for each calendar
+        GIST_ID_ALL="b5685f0ae056050fc5aa70a934ce3200"
+        GIST_ID_HEERENVEEN="4545b58a9586a9f1b836c10ae095ad46"
+        GIST_ID_LEEUWARDEN="ac6e2c937e659c580fb3348dd7172638"
+        GIST_ID_NIEUWEGEIN="f46c18dfd674914040280ae8f71da4d6"
+        GIST_ID_RIJNBOULDER="45c38ef203780277d2163c2a7a173b86"
+        
+        # Sync all calendar to its dedicated Gist
+        if [ -f "agenda_all.ics" ]; then
+          gh gist edit "$GIST_ID_ALL" agenda_all.ics
+          echo "✓ Synced agenda_all.ics to Gist $GIST_ID_ALL"
+        fi
+        
+        # Sync Leeuwarden calendar to its dedicated Gist
+        if [ -f "agenda_leeuwarden.ics" ]; then
+          gh gist edit "$GIST_ID_LEEUWARDEN" agenda_leeuwarden.ics
+          echo "✓ Synced agenda_leeuwarden.ics to Gist $GIST_ID_LEEUWARDEN"
+        fi
+        
+        # Sync Heerenveen calendar to its dedicated Gist
+        if [ -f "agenda_heerenveen.ics" ]; then
+          gh gist edit "$GIST_ID_HEERENVEEN" agenda_heerenveen.ics
+          echo "✓ Synced agenda_heerenveen.ics to Gist $GIST_ID_HEERENVEEN"
+        fi
+        
+        # Sync Rijnboulder calendar to its dedicated Gist
+        if [ -f "agenda_rijnboulder.ics" ]; then
+          gh gist edit "$GIST_ID_RIJNBOULDER" agenda_rijnboulder.ics
+          echo "✓ Synced agenda_rijnboulder.ics to Gist $GIST_ID_RIJNBOULDER"
+        fi
+        
+        # Sync Nieuwegein calendar to its dedicated Gist
+        if [ -f "agenda_nieuwegein.ics" ]; then
+          gh gist edit "$GIST_ID_NIEUWEGEIN" agenda_nieuwegein.ics
+          echo "✓ Synced agenda_nieuwegein.ics to Gist $GIST_ID_NIEUWEGEIN"
+        fi
+        
+        echo "All available calendar files have been synced to their respective Gists."
