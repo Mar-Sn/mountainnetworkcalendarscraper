@@ -29,7 +29,18 @@ jobs:
         pip install -e .
     
     - name: Run script to generate iCal file
-      run: python mountainnetworkcalendarscraper/main.py
+      run: |
+        cd mountainnetworkcalendarscraper
+        python main.py
+    
+    - name: Check if file exists
+      run: |
+        ls -la mountainnetworkcalendarscraper/
+        if [ -f mountainnetworkcalendarscraper/agenda.ics ]; then
+          echo "agenda.ics found in mountainnetworkcalendarscraper/"
+        else
+          echo "agenda.ics not found in mountainnetworkcalendarscraper/"
+        fi
 
     - name: Sync to Gist using GitHub CLI
       env:
