@@ -78,7 +78,7 @@ def create_ical(events):
 
         cal.add_component(event)
 
-    with open('../agenda.ics', 'wb') as f:
+    with open('agenda.ics', 'wb') as f:
         f.write(cal.to_ical())
     print("agenda.ics file created successfully.")
 
